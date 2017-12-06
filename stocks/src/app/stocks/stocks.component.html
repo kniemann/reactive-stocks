@@ -1,0 +1,28 @@
+<h2>{{title}}</h2>
+
+<div>
+  <label>Add stock:
+    <input #stockName />
+  </label>
+  <label>Purchase Price:
+    <input #purchasePrice />
+  </label>
+  <label>Quantity:
+    <input #quantity />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(stockName.value, purchasePrice.value, quantity.value); stockName.value=''; purchasePrice.value=''; quantity.value='' ">
+    add
+  </button>
+</div>
+
+<ul class="stocks">
+  <li *ngFor="let stock of stocks">
+    <a routerLink="/detail/{{stock.symbol}}">
+      <span class="badge">{{stock.symbol}}</span> {{stock.quantity}} shares @ ${{stock.purchasePrice}} 
+    </a>
+    <button class="delete" title="delete stock"
+    (click)="delete(stock)">x</button>
+  </li>
+</ul>
+<app-stock-detail></app-stock-detail>
