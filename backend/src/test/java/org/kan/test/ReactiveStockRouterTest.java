@@ -28,7 +28,7 @@ public class ReactiveStockRouterTest {
     public void setup() {
         webTestClient = WebTestClient.bindToRouterFunction(routerFunction)
                 .configureClient()
-                .baseUrl("http://localhost:8080")
+                .baseUrl("/stocks")
                 .build();
     }
 
@@ -36,7 +36,7 @@ public class ReactiveStockRouterTest {
     public void testCreateStock() {
         Stock stock = new Stock("EXPD",100,50);
         webTestClient.post()
-                .uri("/stocks")
+                .uri("")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(stock), Stock.class)
@@ -52,8 +52,10 @@ public class ReactiveStockRouterTest {
 
     @Test
     public void testQuote() {
+
+
         webTestClient.get()
-                .uri("/stocks/quote/EXPD")
+                .uri("/quote/EXPD")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus()
