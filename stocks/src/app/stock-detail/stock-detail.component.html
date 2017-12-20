@@ -1,3 +1,5 @@
-<p>
-  stock-detail works!
-</p>
+<h4>Quote</h4>
+<div *ngIf="quote">
+  <h2>{{ quote.symbol | uppercase }} Details</h2>
+  <div><span>price: </span>{{quote.latestPrice}}</div>
+</div>

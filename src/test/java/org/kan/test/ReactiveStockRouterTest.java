@@ -50,4 +50,20 @@ public class ReactiveStockRouterTest {
                 .isEqualTo(100);
     }
 
+    @Test
+    public void testQuote() {
+        webTestClient.get()
+                .uri("/stocks/quote/EXPD")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectHeader()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.symbol")
+                .isEqualTo("EXPD");
+    }
+
+
 }

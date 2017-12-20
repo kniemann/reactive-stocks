@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: '/stocks', pathMatch: 'full' },
   { path: 'stocks', component: StocksComponent },
-  { path: 'detail/:id', component: StockDetailComponent },
+  { path: 'detail/:symbol', component: StockDetailComponent },
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-
+import {Quote} from "./quote";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,7 +18,7 @@ export class StocksService {
   getStocks (): Observable<Stock[]> {
     return this.http.get<Stock[]>(this.stocksUrl)
   }
-  
+
   addStock (stock: Stock): Observable<Stock> {
     this.log(`Adding stock ${stock.symbol} ${stock.purchasePrice} ${stock.quantity}`)
     return this.http.post<Stock>(this.stocksUrl, stock, httpOptions).pipe(
@@ -35,6 +35,11 @@ export class StocksService {
       tap(_ => this.log(`deleted stock id=${id}`)),
       catchError(this.handleError<Stock>('deleteStock'))
     );
+  }
+
+  getQuote (symbol: String): Observable<Quote> {
+    console.log("Stock service getting quote: " + symbol)
+    return this.http.get<Quote>(this.stocksUrl + "/quote/" + symbol)
   }
     /**
    * Handle Http operation that failed.
@@ -61,5 +66,5 @@ export class StocksService {
     console.log('Stock Service: ' + message);
   }
 
-  
+
 }
