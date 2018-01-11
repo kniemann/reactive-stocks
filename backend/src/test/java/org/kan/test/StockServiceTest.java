@@ -70,7 +70,7 @@ public class StockServiceTest {
     public void testQuote() {
         StepVerifier.create(stockService.getQuote("EXPD").log()).thenConsumeWhile(
                 v ->  ( (Quote) v).getSymbol().equals("EXPD")
-                        && ((Quote) v).getIexLastUpdated().after(date)  )
+                        && ((Quote) v).getLatestUpdate().after(date)  )
                 .verifyComplete();
     }
 

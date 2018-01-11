@@ -81,4 +81,6 @@
     overflow: auto;
     max-height: 500px;
   }
-
+  .mat-column-select {
+    overflow: visible;
+  }

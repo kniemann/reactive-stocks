@@ -2,15 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule }       from '@angular/core';
 import { FormsModule }    from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
-import { MatTableModule } from '@angular/material';
-
+import { MatTableModule} from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AppComponent } from './app.component';
 import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { StocksComponent } from './stocks/stocks.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { StocksService } from './stocks.service';
-
-
 
 @NgModule({
   declarations: [
@@ -23,7 +21,9 @@ import { StocksService } from './stocks.service';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule,
+    
   ],
   providers: [StocksService],
   bootstrap: [AppComponent]

@@ -16,6 +16,14 @@
   </button>
 </div>
 
+<button (click)="printSelection()">Print Selected</button>
+<button (click)="deleteSelected()">Delete Selected</button>
+<button (click)="chartSelected()">Chart Selected</button>
+<button (click)="detailSelected()">Detail Selected</button>
+
+
+
+
 <ul class="stocks">
   <li *ngFor="let stock of stocks"
       [class.selected]="stock === selectedStock">
@@ -26,9 +34,24 @@
     (click)="delete(stock)">x</button>
   </li>
 </ul>
-
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
     <!-- Symbol Column -->
     <ng-container matColumnDef="symbol">
       <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
@@ -47,9 +70,16 @@
       <mat-cell *matCellDef="let stock"> {{stock.quantity}} </mat-cell>
     </ng-container>
 
+    <!-- Quote Column -->
+    <ng-container matColumnDef="quote">
+        <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
+        <mat-cell *matCellDef="let stock"> {{stock.quote}} </mat-cell>
+      </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             (click)="selection.toggle(row)">
+    </mat-row>
   </mat-table>
 </div>
 

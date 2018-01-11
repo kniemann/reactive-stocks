@@ -19,7 +19,8 @@ public class Quote {
     private double latestPrice;
     private String latestSource;
     private String latestTime;
-    private long latestUpdate;
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER, pattern="s")
+    private Date latestUpdate;
     private long latestVolume;
     private double iexRealtimePrice;
     private long iexRealtimeSize;

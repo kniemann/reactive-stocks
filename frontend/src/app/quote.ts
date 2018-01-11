@@ -1,5 +1,6 @@
 export class Quote {
   symbol: string;
   iexLastUpdated: string;
-  latestPrice: string;
+  latestPrice: number;
+
 }

@@ -34,7 +34,13 @@ public class ReactiveStockRouterTest {
 
     @Test
     public void testCreateStock() {
-        Stock stock = new Stock("EXPD",100,50);
+//        Stock stock = new Stock("EXPD",100,50);
+        Stock stock = Stock.builder()
+                .symbol("EXPD")
+                .purchasePrice(100)
+                .quantity(50)
+                .build();
+
         webTestClient.post()
                 .uri("")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
