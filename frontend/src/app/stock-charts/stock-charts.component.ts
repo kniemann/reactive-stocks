@@ -16,6 +16,8 @@ export class StockChartsComponent implements OnInit {
 
   stockMap : Map<String, StockDaily[]> = new Map<String, StockDaily[]>();
   stock: Observable<StockDaily[]>;
+  date: Date[] = [];
+  price: number[] = [];
   @ViewChild('chart') el: ElementRef;
 
   constructor(  
@@ -41,18 +43,30 @@ export class StockChartsComponent implements OnInit {
       //console.log(this.stockMap.get("EXPD")[0].open);
       this.stock = this.route.paramMap
       .switchMap((params: ParamMap) =>
-        this.stocksService.getStockDaily("EXPD"));
+        this.stocksService.getStockDaily(params.getAll("compare")[0]));
       
-      this.stock.subscribe(stock => console.log(stock[0].close))
-      this.createGraph();
+      this.stock.subscribe(stock => {
+        
+        console.log("Data = " + stock[0].date)
+        stock.forEach( stock => {
+          var dateTime = new Date(stock.date);
+          //console.log("Datetime = " + dateTime)
+          this.date.push(dateTime)
+          this.price.push(stock.close)
+        })
+        this.createGraph();
+      })
+      
   }
 
   createGraph() : void {
     const element = this.el.nativeElement
     var data = [
       {
-        x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-        y: [1, 3, 6],
+        //x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+        //y: [1, 3, 6],
+        x: this.date,
+        y: this.price,
         type: 'scatter'
       }
     ];

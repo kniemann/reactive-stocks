@@ -103,10 +103,10 @@ export class StocksComponent implements OnInit, AfterViewInit {
   }
   chartSelected(): void {
     //this.selection.selected.forEach( stock => this.delete(stock) )
-    let stocksStr: String[] = [];
-    this.selection.selected.forEach(stock => stocksStr.push(stock.symbol));
-    console.log("Charting " + stocksStr);
-    this.router.navigate(['/chart', { stocksStr }]);
+    let compare: String[] = [];
+    this.selection.selected.forEach(stock => compare.push(stock.symbol));
+    console.log("Charting " + compare);
+    this.router.navigate(['/chart', { compare }]);
 
   }
   detailSelected(): void {
