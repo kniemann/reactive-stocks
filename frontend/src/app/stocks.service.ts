@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Stock } from './stock';
+import { StockDaily } from './stock-daily';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -66,5 +67,8 @@ export class StocksService {
     console.log('Stock Service: ' + message);
   }
 
+  getStockDaily(symbol: String) : Observable<StockDaily[]> {
+    return this.http.get<StockDaily[]>(this.stocksUrl + "/daily/" + symbol)
+  }
 
 }

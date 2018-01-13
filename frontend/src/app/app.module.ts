@@ -9,12 +9,14 @@ import { StockDetailComponent } from './stock-detail/stock-detail.component';
 import { StocksComponent } from './stocks/stocks.component';
 import { AppRoutingModule } from './app-routing.module';
 import { StocksService } from './stocks.service';
+import { StockChartsComponent } from './stock-charts/stock-charts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StockDetailComponent,
     StocksComponent,
+    StockChartsComponent,
   ],
   imports: [
     BrowserModule,

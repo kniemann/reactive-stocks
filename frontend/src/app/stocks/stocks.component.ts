@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin'
 import 'rxjs/add/observable/of';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +22,9 @@ import 'rxjs/add/observable/of';
 
 export class StocksComponent implements OnInit, AfterViewInit {
   stocks: Stock[];
-  constructor(private stocksService: StocksService) { }
+  constructor(
+    private router: Router,
+    private stocksService: StocksService) { }
   title = 'My stocks:';
   selectedStock : Stock;
   displayedColumns = ['select', 'symbol', 'purchasePrice', 'quantity', 'quote'];
@@ -93,15 +96,20 @@ export class StocksComponent implements OnInit, AfterViewInit {
   }
 
   printSelection() : void {
-    console.log(this.selection)
+    console.log(this.selection);
   }
   deleteSelected(): void {
-    this.selection.selected.forEach( stock => this.delete(stock) )
+    this.selection.selected.forEach( stock => this.delete(stock) );
   }
   chartSelected(): void {
     //this.selection.selected.forEach( stock => this.delete(stock) )
+    let stocksStr: String[] = [];
+    this.selection.selected.forEach(stock => stocksStr.push(stock.symbol));
+    console.log("Charting " + stocksStr);
+    this.router.navigate(['/chart', { stocksStr }]);
+
   }
   detailSelected(): void {
-    //this.selection.selected.forEach( stock => this.delete(stock) )
+    this.router.navigate(['/detail/' + this.selection.selected[0].symbol]);
   }
 }

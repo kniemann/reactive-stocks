@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 public class IEXTradingService implements StockService {
 
     private WebClient client;
@@ -17,7 +19,7 @@ public class IEXTradingService implements StockService {
         client = WebClient.create("https://api.iextrading.com");
     }
 
-    public Flux<StockDaily> get1Yr(final String symbol) {
+    public Flux<StockDaily> get1YrFlux(final String symbol) {
          return client.get()
                  .uri(String.format("/1.0/stock/%s/chart/1y", symbol))
                  .accept(MediaType.APPLICATION_JSON)
@@ -29,6 +31,14 @@ public class IEXTradingService implements StockService {
                      return stock;
                  });
      }
+
+    public Mono<StockDaily[]> get1Yr(final String symbol) {
+        return client.get()
+                .uri(String.format("/1.0/stock/%s/chart/1y", symbol))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(StockDaily[].class);
+    }
      //TODO Not yet implemented
      public Mono<StockToday> getToday(String symbol) {
         return client.get()

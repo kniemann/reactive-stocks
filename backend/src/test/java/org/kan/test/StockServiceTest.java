@@ -60,7 +60,7 @@ public class StockServiceTest {
 
     @Test
     public void test1Yr() {
-        StepVerifier.create(stockService.get1Yr("EXPD").log()).thenConsumeWhile(
+        StepVerifier.create(stockService.get1YrFlux("EXPD").log()).thenConsumeWhile(
                 v ->  ( (StockDaily) v).getSymbol().equals("EXPD")
                         && ((StockDaily) v).getDate().after(date)  )
                 .verifyComplete();

@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -35,7 +36,8 @@ public class ReactiveStockRouter {
                 .andRoute(POST("/stocks"), handlerFunctions::createStock)
                 .andRoute(PUT("/stocks/{symbol}/quantity"), handlerFunctions::updateStockQuantity)
                 .andRoute(DELETE("/stocks/{symbol}"), handlerFunctions::deleteStock)
-                .andRoute(GET("/stocks/quote/{symbol}"), handlerFunctions::getQuote);
+                .andRoute(GET("/stocks/quote/{symbol}"), handlerFunctions::getQuote)
+                .andRoute(GET("/stocks/daily/{symbol}"), handlerFunctions::getStockDaily);
     }
 
     @Bean CompositeMeterRegistry compositeMeterRegistry() {
@@ -128,10 +130,14 @@ public class ReactiveStockRouter {
                             .build());
         }
 
-
-
-
-
+        public Mono<ServerResponse> getStockDaily(ServerRequest serverRequest) {
+            return stockService.get1Yr(serverRequest.pathVariable("symbol"))
+                    .flatMap(daily -> ServerResponse.ok()
+                            .contentType(MediaType.APPLICATION_JSON_UTF8)
+                            .body(BodyInserters.fromObject(daily)))
+                    .switchIfEmpty(ServerResponse.notFound()
+                            .build());
+        }
     }
 
 }
