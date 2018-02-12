@@ -1,5 +1,6 @@
 package org.kan;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -17,7 +18,6 @@ import java.util.Map;
 @Configuration
 @EnableWebFlux
 public class WebConfig implements WebFluxConfigurer {
-
     @Bean
     CorsWebFilter corsFilter() {
         return new CorsWebFilter(exchange -> {
@@ -41,4 +41,5 @@ public class WebConfig implements WebFluxConfigurer {
     public WebSocketHandlerAdapter handlerAdapter() {
         return new WebSocketHandlerAdapter();
     }
+
 }

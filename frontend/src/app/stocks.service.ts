@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import {Quote} from "./quote";
+import { AccountHealth } from './account-health';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -71,4 +72,8 @@ export class StocksService {
     return this.http.get<StockDaily[]>(this.stocksUrl + "/daily/" + symbol)
   }
 
+  getAccountHealth() : Observable<AccountHealth> {
+    console.log("Getting account health");
+    return this.http.get<AccountHealth>(this.stocksUrl + "/account/health");
+  }
 }

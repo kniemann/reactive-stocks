@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Stock } from '../stock';
+import { AccountHealth } from '../account-health';
 import { StocksService} from '../stocks.service';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -22,19 +23,22 @@ import { Router } from '@angular/router';
 
 export class StocksComponent implements OnInit, AfterViewInit {
   stocks: Stock[];
+  accountHealth: AccountHealth;
   constructor(
     private router: Router,
     private stocksService: StocksService) { }
-  title = 'My stocks:';
+  title = 'My Stocks';
   selectedStock : Stock;
   displayedColumns = ['select', 'symbol', 'purchasePrice', 'quantity', 'quote'];
   dataSource = new MatTableDataSource<Stock>();
   selection = new SelectionModel<Stock>(true, []);
 
   ngOnInit() {
+    this.getAccountHealth();
   }
   ngAfterViewInit() {
     this.getStocks();
+    
   }
 
 
@@ -56,6 +60,14 @@ export class StocksComponent implements OnInit, AfterViewInit {
 
   getQuote(symbol): Observable<Quote> {
     return this.stocksService.getQuote(symbol);
+  }
+
+  getAccountHealth(): void {
+    this.stocksService.getAccountHealth()
+    .subscribe( accountHealth => {
+      //console.log("Acc " + accountHealth.gain)
+      this.accountHealth = accountHealth; 
+    });
   }
 
 

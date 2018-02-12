@@ -21,9 +21,6 @@
 <button routerLink="/chart"(click)="chartSelected()">Chart Selected</button>
 <button (click)="detailSelected()">Detail Selected</button>
 
-
-
-
 <ul class="stocks">
   <li *ngFor="let stock of stocks"
       [class.selected]="stock === selectedStock">
@@ -83,5 +80,8 @@
   </mat-table>
 </div>
 
-
+<div *ngIf="accountHealth">
+  <h3>Total Value: {{accountHealth.value}}</h3>
+  <h3>Total Gain: {{accountHealth.gain}}</h3>
+</div>
 <!--<app-stock-detail [stock]="selectedStock"></app-stock-detail>-->
