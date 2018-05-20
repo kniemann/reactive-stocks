@@ -39,7 +39,6 @@ public class IEXTradingService implements StockService {
                 .retrieve()
                 .bodyToMono(StockDaily[].class);
     }
-     //TODO Not yet implemented
      public Mono<StockToday> getToday(String symbol) {
         return client.get()
                 .uri(String.format("/1.0/stock/%s/chart/1d", symbol))

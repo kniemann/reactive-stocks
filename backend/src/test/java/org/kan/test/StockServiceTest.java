@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-//@RunWith(JUnitPlatform.class)
 @SpringJUnitConfig
 @ContextConfiguration(classes = {TestConfig.class})
 public class StockServiceTest {

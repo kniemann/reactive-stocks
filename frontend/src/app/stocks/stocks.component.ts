@@ -1,17 +1,16 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Stock } from '../stock';
+import { Stock } from '../model/stock';
 import { AccountHealth } from '../account-health';
 import { StocksService} from '../stocks.service';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
-import { Quote } from '../quote';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { mergeMap } from 'rxjs/operators/mergeMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/observable/forkJoin'
-import 'rxjs/add/observable/of';
+import { Observable ,  forkJoin } from 'rxjs';
+import { Quote } from '../model/quote';
+import { mergeMap } from 'rxjs/operators';
+
+
+
+
 import { Router } from '@angular/router';
 
 
@@ -43,18 +42,22 @@ export class StocksComponent implements OnInit, AfterViewInit {
 
 
   getStocks(): void {
-    this.stocksService.getStocks()
-       .mergeMap((stocks : Array<Stock>) => {
-         return Observable.forkJoin(
-           stocks.map((stock : Stock) => {
-            this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => stock.quote = quote.latestPrice );
-            return Observable.of(stock);
-           }
-         ));
-       }).subscribe(stocks => {
-         this.dataSource.data = stocks;
-         //this.stocks = stocks;
-       });    
+
+    this.stocksService.getStocks().pipe(
+    )
+    // TODO fix this
+    // this.stocksService.getStocks()
+    //    .mergeMap((stocks : Array<Stock>) => {
+    //      return Observable.forkJoin(
+    //        stocks.map((stock : Stock) => {
+    //         this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => stock.quote = quote.latestPrice );
+    //         return Observable.of(stock);
+    //        }
+    //      ));
+    //    }).subscribe(stocks => {
+    //      this.dataSource.data = stocks;
+    //      //this.stocks = stocks;
+    //    });    
   }
 
 

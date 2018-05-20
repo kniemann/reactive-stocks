@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Stock } from './stock';
-import { StockDaily } from './stock-daily';
+import { Stock } from './model/stock';
+import { StockDaily } from './model/stock-daily';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import {Quote} from "./quote";
+import { Quote } from './model/quote'
 import { AccountHealth } from './account-health';
 
 const httpOptions = {

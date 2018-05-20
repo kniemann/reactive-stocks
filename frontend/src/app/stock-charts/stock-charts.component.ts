@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import 'rxjs/add/operator/switchMap';
+
 import { StocksService } from '../stocks.service';
-import { Stock } from '../stock';
-import { StockDaily } from '../stock-daily';
-import { Observable } from 'rxjs/Observable';
+import { Stock } from '../model/stock';
+import { StockDaily } from '../model/stock-daily';
+import { Observable } from 'rxjs';
 import 'plotly.js/lib/core'
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-charts',
@@ -38,12 +39,14 @@ export class StockChartsComponent implements OnInit {
     //         ));
     //   })
 
+    this.stock = this.route.paramMap.pipe ( 
+      switchMap(params => this.stocksService.getStockDaily(params.getAll("compare")[0]))
+    );
 
 
-      //console.log(this.stockMap.get("EXPD")[0].open);
-      this.stock = this.route.paramMap
-      .switchMap((params: ParamMap) =>
-        this.stocksService.getStockDaily(params.getAll("compare")[0]));
+      // this.stock = this.route.paramMap
+      // .switchMap((params: ParamMap) =>
+      //   this.stocksService.getStockDaily(params.getAll("compare")[0]));
       
       this.stock.subscribe(stock => {
         

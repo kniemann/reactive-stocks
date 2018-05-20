@@ -1,0 +1,3 @@
+org/kan/test/TestConfig.class
+org/kan/test/ReactiveStockRouterTest.class
+org/kan/test/StockServiceTest.class
