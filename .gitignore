@@ -22,11 +22,8 @@
 hs_err_pid*
 .idea
 node_modules
-target/classes/application.properties
-target/generated-sources/
-target/generated-test-sources/
-target/maven-status/
-target/surefire-reports/
+target/
+
 
 #Props
 backend/src/main/resources/application.yml
