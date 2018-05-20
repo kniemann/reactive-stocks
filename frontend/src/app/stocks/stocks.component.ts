@@ -1,17 +1,19 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Stock } from '../model/stock';
 import { AccountHealth } from '../account-health';
 import { StocksService} from '../stocks.service';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Observable ,  forkJoin } from 'rxjs';
+import { forkJoin, combineLatest, zip } from 'rxjs';
 import { Quote } from '../model/quote';
-import { mergeMap } from 'rxjs/operators';
-
+import { mergeMap, concat, concatMap, combineAll, concatAll, mergeAll, switchMap, map } from 'rxjs/operators';
+import { Observable, Subject, asapScheduler, pipe, of, from, interval, merge, fromEvent } from 'rxjs';
 
 
 
 import { Router } from '@angular/router';
+import { StockDaily } from '../model/stock-daily';
+import { join } from 'path';
 
 
 @Component({
@@ -25,7 +27,10 @@ export class StocksComponent implements OnInit, AfterViewInit {
   accountHealth: AccountHealth;
   constructor(
     private router: Router,
-    private stocksService: StocksService) { }
+    private stocksService: StocksService,
+    private changeDetectorRefs: ChangeDetectorRef
+  
+  ) { }
   title = 'My Stocks';
   selectedStock : Stock;
   displayedColumns = ['select', 'symbol', 'purchasePrice', 'quantity', 'quote'];
@@ -34,31 +39,60 @@ export class StocksComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getAccountHealth();
+    this.getStocks();
+
   }
   ngAfterViewInit() {
-    this.getStocks();
-    
+    //this.getQuotes();
   }
 
 
   getStocks(): void {
-
     this.stocksService.getStocks().pipe(
-    )
-    // TODO fix this
-    // this.stocksService.getStocks()
-    //    .mergeMap((stocks : Array<Stock>) => {
-    //      return Observable.forkJoin(
-    //        stocks.map((stock : Stock) => {
-    //         this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => stock.quote = quote.latestPrice );
-    //         return Observable.of(stock);
-    //        }
-    //      ));
-    //    }).subscribe(stocks => {
-    //      this.dataSource.data = stocks;
-    //      //this.stocks = stocks;
-    //    });    
+       mergeMap((stocks : Stock[]) => {
+          
+          return forkJoin(
+            stocks.map((stock : Stock) => {
+              this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => stock.quote = quote.latestPrice );
+              return of(stock);
+            }) 
+          )
+       }),
+      ).subscribe(stocks => {
+         this.dataSource.data = stocks;
+       }); 
   }
+
+  getQuotes(): void {
+    this.stocksService.getStocks().subscribe( 
+      stocks => {
+        stocks.forEach((stock: Stock) => {
+          this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => {
+            console.log(quote.symbol + " = " + quote.latestPrice)
+            stock.quote = quote.latestPrice
+            this.updateQuote(stock)
+            console.log("Updating quote")
+            this.dataSource.data.forEach(item => console.log(item))
+            this.changeDetectorRefs.detectChanges() 
+
+            
+          })
+        })
+      }
+    )
+    
+  }
+
+  updateQuote(newStock: Stock){
+    let updateStock = this.dataSource.data.find(stock => stock.symbol == newStock.symbol );
+
+    let index = this.dataSource.data.indexOf(updateStock);
+
+
+    this.dataSource.data[index] = newStock;
+
+  }
+
 
 
   getQuote(symbol): Observable<Quote> {

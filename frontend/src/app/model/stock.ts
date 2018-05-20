@@ -1,3 +1,5 @@
+import { Quote } from './quote'
+
 export class Stock {
     symbol: string;
     quantity: number;
