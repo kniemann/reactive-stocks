@@ -25,9 +25,9 @@ node_modules
 target/
 backend/target
 dist
-frontend/dist
-frontend/node
-frontend/target
-
+**/dist
+**/node
+**/target
+**/node_modules
 #Props
 backend/src/main/resources/application.yml
