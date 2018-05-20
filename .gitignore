@@ -23,7 +23,11 @@ hs_err_pid*
 .idea
 node_modules
 target/
-
+backend/target
+dist
+frontend/dist
+frontend/node
+frontend/target
 
 #Props
 backend/src/main/resources/application.yml
