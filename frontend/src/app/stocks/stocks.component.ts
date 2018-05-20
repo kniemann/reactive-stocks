@@ -74,8 +74,6 @@ export class StocksComponent implements OnInit, AfterViewInit {
             console.log("Updating quote")
             this.dataSource.data.forEach(item => console.log(item))
             this.changeDetectorRefs.detectChanges() 
-
-            
           })
         })
       }
@@ -111,12 +109,15 @@ export class StocksComponent implements OnInit, AfterViewInit {
   add(symbol: string, purchasePrice: number, quantity: number): void {
     symbol = symbol.trim();
     if (!symbol || !purchasePrice || !quantity) { return; }
-    this.stocksService.addStock({ symbol, purchasePrice, quantity } as Stock)
-      .subscribe(stock => {
-        //this.stocks.push(stock);
+    this.stocksService.addStock({ symbol, purchasePrice, quantity } as Stock).pipe(
+      mergeMap((stock : Stock) => { 
+             this.stocksService.getQuote(stock.symbol).subscribe( (quote: Quote) => stock.quote = quote.latestPrice );
+             return of(stock);
+      })
+     ).subscribe(stock => {
         this.dataSource.data.push(stock);
         this.dataSource._updateChangeSubscription();
-    });
+    })
   }
 
   delete(stock: Stock): void {
